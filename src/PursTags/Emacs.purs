@@ -11,9 +11,24 @@ import Data.Tuple (Tuple(..), snd)
 import Effect.Class (class MonadEffect, liftEffect)
 import PureScript.CST (RecoveredParserResult(..), parseModule)
 import PureScript.CST.Traversal (defaultMonoidalVisitor, foldMapModule)
-import PureScript.CST.Types (DataCtor(..), Declaration(..), FixityOp(..), Foreign(..), Labeled(..), Module, Separated(..))
+import PureScript.CST.Types
+  ( DataCtor(..)
+  , Declaration(..)
+  , FixityOp(..)
+  , Foreign(..)
+  , Labeled(..)
+  , Module(..)
+  , ModuleHeader(..)
+  , Separated(..)
+  )
 import PursTags.Foreign (unsafeByteOffsetBeforeLine, unsafeGetByteLength, unsafeGetLineStr)
-import PursTags.Types (EtagsSrcEntry(..), EtagsSrcHeader(..), SourcePath(..), SourceString(..), nameToEntry)
+import PursTags.Types
+  ( EtagsSrcEntry(..)
+  , EtagsSrcHeader(..)
+  , SourcePath(..)
+  , SourceString(..)
+  , nameToEntry
+  )
 import Safe.Coerce (coerce)
 import Web.Encoding.TextEncoder as TextEncoder
 
@@ -94,11 +109,18 @@ getModuleEntries = foldMapModule $ defaultMonoidalVisitor
 getSourceEtags ∷ SourcePath → SourceString → Maybe EtagsSrcHeader
 getSourceEtags srcPath (SourceString srcStr) =
   case parseModule srcStr of
-    ParseSucceeded m →
-      pure $ EtagsSrcHeader
-        { srcPath
-        , entries: getModuleEntries m
-        }
+    ParseSucceeded m@(Module { header: ModuleHeader ({ name: moduleName }) }) →
+      let
+        moduleEntry :: EtagsSrcEntry
+        moduleEntry = nameToEntry moduleName
+
+        entries :: Array EtagsSrcEntry
+        entries = Array.cons moduleEntry (getModuleEntries m)
+      in
+        pure $ EtagsSrcHeader
+          { srcPath
+          , entries
+          }
 
     _ → Nothing
 
