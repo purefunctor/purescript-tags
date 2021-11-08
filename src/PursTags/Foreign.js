@@ -1,6 +1,6 @@
 "use strict";
 
-exports.unsafeComputeByteOffsetJs = (buffer, line, column) => {
+exports.unsafeByteOffsetBeforeLine = (buffer) => (line) => {
     let offset = 0;
 
     let currentLine = line + 1;
@@ -11,13 +11,7 @@ exports.unsafeComputeByteOffsetJs = (buffer, line, column) => {
         offset += 1;
     }
 
-    let currentColumn = column + 1;
-    while (currentColumn > 1) {
-        offset += 1;
-        currentColumn -= 1;
-    }
-
-    return offset + 1;
+    return offset;
 }
 
 exports.unsafeGetByteLength = (buffer) => {

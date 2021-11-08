@@ -2,19 +2,20 @@ module PursTags.Emacs where
 
 import Prelude
 
-import Effect.Class (class MonadEffect, liftEffect)
 import Data.Array as Array
 import Data.Array.NonEmpty as NEA
 import Data.ArrayBuffer.Types (Uint8Array)
 import Data.Maybe (Maybe(..))
+import Data.String.CodePoints as SCP
 import Data.Tuple (Tuple(..), snd)
+import Effect.Class (class MonadEffect, liftEffect)
 import PureScript.CST (RecoveredParserResult(..), parseModule)
 import PureScript.CST.Traversal (defaultMonoidalVisitor, foldMapModule)
 import PureScript.CST.Types (DataCtor(..), Declaration(..), FixityOp(..), Foreign(..), Labeled(..), Module, Separated(..))
-import PursTags.Foreign (unsafeComputeByteOffset, unsafeGetByteLength, unsafeGetLineStr)
+import PursTags.Foreign (unsafeByteOffsetBeforeLine, unsafeGetByteLength, unsafeGetLineStr)
 import PursTags.Types (EtagsSrcEntry(..), EtagsSrcHeader(..), SourcePath(..), SourceString(..), nameToEntry)
-import Web.Encoding.TextEncoder as TextEncoder
 import Safe.Coerce (coerce)
+import Web.Encoding.TextEncoder as TextEncoder
 
 getDeclarationEntries ∷ Declaration Void → Array EtagsSrcEntry
 getDeclarationEntries = case _ of
@@ -106,8 +107,10 @@ renderEtags (SourceString srcStr) (EtagsSrcHeader { srcPath, entries }) = do
   encoder ← liftEffect TextEncoder.new
 
   let
+    encode = flip TextEncoder.encode encoder
+
     srcBuf ∷ Uint8Array
-    srcBuf = TextEncoder.encode srcStr encoder
+    srcBuf = encode srcStr
 
     body ∷ String
     body = Array.intercalate "\n" $ entries <#> \(EtagsSrcEntry { text, line, column }) →
@@ -115,8 +118,16 @@ renderEtags (SourceString srcStr) (EtagsSrcHeader { srcPath, entries }) = do
         lineStr ∷ String
         lineStr = unsafeGetLineStr srcStr line
 
-        offset ∷ Int
-        offset = unsafeComputeByteOffset srcBuf line column
+        -- Take the byte offset before a specified line.
+        preLineOffset :: Int
+        preLineOffset = unsafeByteOffsetBeforeLine srcBuf line
+
+        -- Take the byte offset needed to get to the column.
+        lineOffset :: Int
+        lineOffset = unsafeGetByteLength (encode (SCP.take (column + 1) lineStr))
+
+        offset :: Int
+        offset = preLineOffset + lineOffset
       in
         lineStr <> "\x7f" <> text <> "\x01" <> show (line + 1) <> "," <> show offset
 

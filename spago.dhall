@@ -6,7 +6,6 @@
   , "console"
   , "effect"
   , "foldable-traversable"
-  , "functions"
   , "language-cst-parser"
   , "maybe"
   , "newtype"
@@ -16,6 +15,7 @@
   , "node-process"
   , "prelude"
   , "safe-coerce"
+  , "strings"
   , "tuples"
   , "web-encoding"
   ]
