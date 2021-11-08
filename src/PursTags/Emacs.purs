@@ -10,7 +10,7 @@ import Data.Maybe (Maybe(..))
 import Data.Tuple (Tuple(..), snd)
 import PureScript.CST (RecoveredParserResult(..), parseModule)
 import PureScript.CST.Traversal (defaultMonoidalVisitor, foldMapModule)
-import PureScript.CST.Types (DataCtor(..), Declaration(..), Foreign(..), Labeled(..), Module, Separated(..))
+import PureScript.CST.Types (DataCtor(..), Declaration(..), FixityOp(..), Foreign(..), Labeled(..), Module, Separated(..))
 import PursTags.Foreign (unsafeComputeByteOffset, unsafeGetByteLength, unsafeGetLineStr)
 import PursTags.Types (EtagsSrcEntry(..), EtagsSrcHeader(..), SourcePath(..), SourceString(..), nameToEntry)
 import Web.Encoding.TextEncoder as TextEncoder
@@ -75,6 +75,14 @@ getDeclarationEntries = case _ of
     ForeignKind _ kindName →
       [ nameToEntry kindName ]
 
+  DeclFixity { operator } → case operator of
+
+    FixityValue _ _ operatorName →
+      [ nameToEntry operatorName ]
+
+    FixityType _ _ _ operatorName →
+      [ nameToEntry operatorName ]
+
   _ → mempty
 
 getModuleEntries ∷ Module Void → Array EtagsSrcEntry
@@ -112,7 +120,7 @@ renderEtags (SourceString srcStr) (EtagsSrcHeader { srcPath, entries }) = do
       in
         lineStr <> "\x7f" <> text <> "\x01" <> show (line + 1) <> "," <> show offset
 
-    bodyBytes :: Int
+    bodyBytes ∷ Int
     bodyBytes = unsafeGetByteLength (TextEncoder.encode body encoder)
 
     header ∷ String
