@@ -107,6 +107,7 @@ renderEtags (SourceString srcStr) (EtagsSrcHeader { srcPath, entries }) = do
   encoder ← liftEffect TextEncoder.new
 
   let
+    encode ∷ String → Uint8Array
     encode = flip TextEncoder.encode encoder
 
     srcBuf ∷ Uint8Array
@@ -119,14 +120,14 @@ renderEtags (SourceString srcStr) (EtagsSrcHeader { srcPath, entries }) = do
         lineStr = unsafeGetLineStr srcStr line
 
         -- Take the byte offset before a specified line.
-        preLineOffset :: Int
+        preLineOffset ∷ Int
         preLineOffset = unsafeByteOffsetBeforeLine srcBuf line
 
         -- Take the byte offset needed to get to the column.
-        lineOffset :: Int
+        lineOffset ∷ Int
         lineOffset = unsafeGetByteLength (encode (SCP.take (column + 1) lineStr))
 
-        offset :: Int
+        offset ∷ Int
         offset = preLineOffset + lineOffset
       in
         lineStr <> "\x7f" <> text <> "\x01" <> show (line + 1) <> "," <> show offset
