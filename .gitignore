@@ -8,3 +8,6 @@
 /.purs*
 /.psa*
 /.spago
+/dist/_index.js
+/dist/index.js
+TAGS
