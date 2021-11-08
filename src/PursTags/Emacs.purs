@@ -112,7 +112,10 @@ renderEtags (SourceString srcStr) (EtagsSrcHeader { srcPath, entries }) = do
       in
         lineStr <> "\x7f" <> text <> "\x01" <> show (line + 1) <> "," <> show offset
 
+    bodyBytes :: Int
+    bodyBytes = unsafeGetByteLength (TextEncoder.encode body encoder)
+
     header ∷ String
-    header = coerce srcPath <> "," <> show (unsafeGetByteLength body)
+    header = coerce srcPath <> "," <> show bodyBytes
 
   pure $ "\x0c" <> "\n" <> header <> "\n" <> body

@@ -20,9 +20,8 @@ exports.unsafeComputeByteOffsetJs = (buffer, line, column) => {
     return offset + 1;
 }
 
-exports.unsafeGetByteLength = (source) => {
-    let encoder = new TextEncoder();
-    return encoder.encode(source).byteLength;
+exports.unsafeGetByteLength = (buffer) => {
+    return buffer.byteLength;
 }
 
 exports.unsafeGetLineStr = (source) => (line) => {
