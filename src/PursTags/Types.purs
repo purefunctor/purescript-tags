@@ -4,7 +4,6 @@ import Prelude
 
 import Data.Newtype (class Newtype, unwrap)
 import PureScript.CST.Types as CST
-import Safe.Coerce (coerce)
 
 newtype EtagsSrcHeader = EtagsSrcHeader
   { srcPath ∷ SourcePath
@@ -26,6 +25,8 @@ derive newtype instance Show EtagsSrcEntry
 newtype SourcePath = SourcePath String
 
 derive instance Newtype SourcePath _
+derive newtype instance Eq SourcePath
+derive newtype instance Ord SourcePath
 derive newtype instance Show SourcePath
 
 newtype SourceString = SourceString String
@@ -40,5 +41,13 @@ unName (CST.Name { name: text, token: { range: { start: { line, column } } } }) 
   , column
   }
 
-nameToEntry ∷ ∀ n. Newtype n String ⇒ CST.Name n → EtagsSrcEntry
-nameToEntry = (coerce ∷ (CST.Name n → _) → (CST.Name n → _)) unName
+newtype CtagsSrcEntry = CtagsSrcEntry
+  { text :: String
+  , line :: Int
+  , srcPath :: SourcePath
+  }
+
+derive instance Newtype CtagsSrcEntry _
+derive newtype instance Eq CtagsSrcEntry
+derive newtype instance Ord CtagsSrcEntry
+derive newtype instance Show CtagsSrcEntry
