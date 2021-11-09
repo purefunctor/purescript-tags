@@ -1,6 +1,7 @@
 { name = "purstags"
 , dependencies =
   [ "aff"
+  , "argparse-basic"
   , "arraybuffer-types"
   , "arrays"
   , "console"
@@ -13,6 +14,7 @@
   , "node-fs-aff"
   , "node-glob-basic"
   , "node-process"
+  , "ordered-collections"
   , "prelude"
   , "safe-coerce"
   , "strings"
