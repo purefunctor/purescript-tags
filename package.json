@@ -7,7 +7,7 @@
     "build": "spago build",
     "test": "spago -x tests.dhall test",
     "repl": "spago -x tests.dhall repl",
-    "bundle": "spago bundle-app -t dist/_index.js && pnpm esbuild --minify --bundle --platform=node dist/_index.js > dist/index.js"
+    "bundle": "rm -f dist/index.js dist/_index.js && spago bundle-app -t dist/_index.js && pnpm esbuild --minify --bundle --platform=node dist/_index.js > dist/index.js"
   },
   "bin": {
     "purstags": "dist/index.js"
@@ -17,6 +17,8 @@
     "dist/LICENSE-purs"
   ],
   "dependencies": {
-    "esbuild": "^0.13.12"
+    "esbuild": "^0.13.12",
+    "glob": "^7.2.0",
+    "multistream": "^4.1.0"
   }
 }
