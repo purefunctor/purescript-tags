@@ -12,7 +12,7 @@
   , "maybe"
   , "newtype"
   , "node-buffer"
-  , "node-fs-aff"
+  , "node-fs"
   , "node-glob-basic"
   , "node-path"
   , "node-process"

@@ -1,6 +1,6 @@
 let upstream =
-      https://github.com/purescript/package-sets/releases/download/psc-0.14.4-20211030/packages.dhall
-        sha256:5cd7c5696feea3d3f84505d311348b9e90a76c4ce3684930a0ff29606d2d816c
+      https://github.com/purescript/package-sets/releases/download/psc-0.15.15-20240909/packages.dhall
+        sha256:3b81bf89b8644c218274383c860cd1dbf350637b4f3ebe5d0aceba96bd020732
 
 let overrides = {=}
 
@@ -44,7 +44,7 @@ let additions =
           , "effect"
           , "lists"
           , "maybe"
-          , "node-fs-aff"
+          , "node-fs"
           , "node-path"
           , "node-process"
           , "ordered-collections"

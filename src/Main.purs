@@ -80,11 +80,11 @@ main = do
       Console.log $ Arg.printArgError err
       case err of
         Arg.ArgError _ Arg.ShowHelp -> do
-          Process.exit 0
+          Process.exit' 0
         Arg.ArgError _ (Arg.ShowInfo _) -> do
-          Process.exit 0
+          Process.exit' 0
         _ -> do
-          Process.exit 1
+          Process.exit' 1
 
     Right (Generate { tagsFormat, useAbsolutePath, pursGlob }) -> launchAff_ do
       fullSrcPaths <- Set.toUnfoldable <$> (expandGlobs workDir pursGlob)
@@ -139,4 +139,4 @@ main = do
           generateEtags
           generateCtags
 
-      liftEffect $ Process.exit 0
+      liftEffect $ Process.exit' 0
