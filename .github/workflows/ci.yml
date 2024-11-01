@@ -23,6 +23,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
+          run_install: true
           version: 9
 
       - name: Build Package
