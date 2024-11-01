@@ -16,12 +16,10 @@
     "dist/index.js",
     "dist/LICENSE-purs"
   ],
-  "dependencies": {
-    "glob": "^11.0.0",
-    "multistream": "^4.1.0"
-  },
   "devDependencies": {
     "esbuild": "^0.23.1",
+    "glob": "^11.0.0",
+    "multistream": "^4.1.0",
     "spago": "0.93.39"
   }
 }
