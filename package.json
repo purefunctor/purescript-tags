@@ -1,13 +1,13 @@
 {
   "name": "purstags",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": false,
   "license": "BSD-3-Clause",
   "scripts": {
     "build": "spago build",
     "test": "spago -x tests.dhall test",
     "repl": "spago -x tests.dhall repl",
-    "bundle": "rm -f dist/index.js dist/_index.js && spago bundle-app -t dist/_index.js && pnpm esbuild --minify --bundle --platform=node dist/_index.js > dist/index.js"
+    "bundle": "rm -f dist/index.js dist/_index.js && spago bundle-app -t dist/_index.js --platform=node && node_modules/.bin/esbuild --minify --bundle --platform=node dist/_index.js > dist/index.js"
   },
   "bin": {
     "purstags": "dist/index.js"
@@ -17,8 +17,9 @@
     "dist/LICENSE-purs"
   ],
   "dependencies": {
-    "esbuild": "^0.13.12",
+    "esbuild": "^0.23.1",
     "glob": "^7.2.0",
-    "multistream": "^4.1.0"
+    "multistream": "^4.1.0",
+    "spago": "0.21.0"
   }
 }
