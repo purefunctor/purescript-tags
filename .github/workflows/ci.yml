@@ -15,15 +15,15 @@ jobs:
       - name: Cache PureScript dependencies
         uses: actions/cache@v2
         with:
-          key: spago-${{ hashFiles('**/*.dhall') }}
+          key: spago-${{ hashFiles('spago.lock') }}-${{ hashFiles('src/**/*.purs') }}
           path: |
             .spago
             output
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v2.0.1
+        uses: pnpm/action-setup@v4
         with:
-          version: 6.19.1
+          version: 9
 
       - name: Build Package
         run: pnpm build

@@ -1,0 +1,90 @@
+package:
+  dependencies:
+    - aff
+    - argparse-basic
+    - arraybuffer-types
+    - arrays
+    - console
+    - effect
+    - either
+    - foldable-traversable
+    - language-cst-parser
+    - maybe
+    - newtype
+    - node-buffer
+    - node-fs
+    - node-glob-basic
+    - node-path
+    - node-process
+    - ordered-collections
+    - prelude
+    - safe-coerce
+    - strings
+    - tuples
+    - web-encoding
+  name: purstags
+workspace:
+  extraPackages:
+    argparse-basic:
+      dependencies:
+        - arrays
+        - console
+        - debug
+        - effect
+        - either
+        - foldable-traversable
+        - free
+        - lists
+        - maybe
+        - node-process
+        - psci-support
+        - record
+        - strings
+        - transformers
+      git: https://github.com/natefaubion/purescript-argparse-basic.git
+      ref: v1.0.0
+    language-cst-parser:
+      dependencies:
+        - arrays
+        - const
+        - control
+        - effect
+        - either
+        - foldable-traversable
+        - free
+        - functors
+        - identity
+        - integers
+        - lazy
+        - lists
+        - maybe
+        - newtype
+        - numbers
+        - ordered-collections
+        - partial
+        - prelude
+        - st
+        - strings
+        - transformers
+        - tuples
+        - typelevel-prelude
+        - unfoldable
+        - unsafe-coerce
+      git: https://github.com/natefaubion/purescript-language-cst-parser.git
+      ref: v0.9.3
+    node-glob-basic:
+      dependencies:
+        - aff
+        - console
+        - effect
+        - lists
+        - maybe
+        - node-fs
+        - node-path
+        - node-process
+        - ordered-collections
+        - strings
+      git: https://github.com/natefaubion/purescript-node-glob-basic.git
+      ref: v1.2.2
+  packageSet:
+    registry: 60.7.0
